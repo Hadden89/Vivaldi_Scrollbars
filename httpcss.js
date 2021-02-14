@@ -1,4 +1,8 @@
-// Send current theme's css variables to chrome:// and vivaldi:// urls
+// Based on a Sporif JS script
+// https://github.com/Sporif/CustomHooks/blob/master/hooks/theme-css-variables.js
+
+// Tnx to Choc which fixed the script for Vivaldi 3.6+
+// https://discord.com/channels/170121320825225218/170121320825225218/810447890169593856
 
 (function() {
 
@@ -11,13 +15,13 @@
 
 	// Send when theme changes
 	var observer = new MutationObserver(send);
-	observer.observe(document.body, {
+	observer.observe(document.querySelector('html'), {
 		attributes: true,
 		attributeFilter: ['style']
 	});
 
 	function send() {
-		var css = ":root {\n "+document.body.style.cssText.replace(/;/g, ';\n').replace(/:/g, ': ')+" }";
+		var css = ":root {\n "+document.querySelector('html').style.cssText.replace(/;/g, ';\n').replace(/:/g, ': ')+" }";
 		var addCss = `if(!colors){ 
 			var colors = document.createElement('style'); 
 			colors.setAttribute("description", "Current theme's css variables, added by theme-css-variables.js"); 
